@@ -1,0 +1,307 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>The retry loop is a human-in-the-loop loop — aaron@pangburn:~$</title>
+  <link rel="icon" type="image/svg+xml" href="../assets/favicon.svg">
+  <link rel="stylesheet" href="../colors_and_type.css">
+  <style>
+    body { min-height: 100vh; }
+    .page { max-width: 880px; margin: 0 auto; padding: 0 32px; }
+
+    /* Header */
+    .topbar { display:flex; align-items:center; justify-content:space-between; padding: 20px 0 16px; border-bottom: 1px solid var(--rule-strong); margin-bottom: 56px; }
+    .wm { font-family: var(--font-mono); font-weight: 600; font-size: 14px; color: var(--fg); text-decoration: none; display: inline-flex; align-items: baseline; }
+    .wm .dim { color: var(--fg-3); }
+    .wm .dollar { color: var(--red); margin: 0 4px; }
+    .wm .cur { display:inline-block; width:8px; height:14px; background: var(--red); margin-left: 2px; transform: translateY(2px); animation: blink 1.05s steps(2, start) infinite; }
+    @keyframes blink { to { background: transparent; } }
+    @media (prefers-reduced-motion: reduce) { .wm .cur { animation: none; } }
+    .nav { display:flex; gap:20px; align-items:center; }
+    .nav a { font-family: var(--font-mono); font-size: 12px; color: var(--fg-3); text-decoration: none; padding-bottom: 4px; letter-spacing: 0.04em; border-bottom: 1px solid transparent; }
+    .nav a.active { color: var(--fg); border-bottom-color: var(--red); }
+    .nav .rss { color: var(--fg-4); font-size: 11px; border: 1px solid var(--rule-bright); border-radius: 2px; padding: 4px 8px; letter-spacing: 0.10em; text-transform: uppercase; }
+
+    /* Back */
+    .back { display:inline-flex; align-items:center; gap: 6px; font-family: var(--font-mono); font-size: 12px; color: var(--fg-3); text-decoration: none; border: 1px solid var(--rule-bright); padding: 5px 10px; letter-spacing: 0.04em; margin-bottom: 40px; }
+    .back .arrow { color: var(--red); }
+
+    /* Post head */
+    .post-head { max-width: 680px; margin-bottom: 48px; }
+    .meta-row { font-family: var(--font-mono); font-size: 11px; color: var(--fg-4); letter-spacing: 0.10em; text-transform: uppercase; display: flex; gap: 8px; align-items: baseline; margin-bottom: 16px; }
+    .meta-row .id { color: var(--red); font-weight: 600; }
+    .meta-row .sep { color: var(--fg-5); }
+    .post-title { font-family: var(--font-sans); font-size: 44px; font-weight: 700; color: var(--fg); margin: 0 0 16px; letter-spacing: -0.025em; line-height: 1.05; text-wrap: balance; }
+    .post-dek { font-family: var(--font-sans); font-size: 17px; color: var(--fg-3); line-height: 1.55; margin: 0 0 20px; text-wrap: pretty; }
+    .tags { display:flex; gap: 6px; flex-wrap: wrap; }
+    .tag { font-family: var(--font-mono); font-size: 10px; color: var(--fg-4); background: var(--surface); border: 1px solid var(--rule-strong); border-radius: 2px; padding: 2px 7px; letter-spacing: 0.04em; }
+
+    /* Body */
+    .post-body { max-width: 680px; }
+    .post-body p { font-family: var(--font-sans); font-size: 16px; line-height: 1.65; color: var(--fg-2); margin: 0 0 20px; text-wrap: pretty; }
+    .post-body h2 { font-family: var(--font-sans); font-size: 26px; font-weight: 600; color: var(--fg); margin: 44px 0 14px; letter-spacing: -0.015em; line-height: 1.25; text-wrap: balance; }
+    .post-body h3 { font-family: var(--font-sans); font-size: 18px; font-weight: 600; color: var(--fg); margin: 32px 0 10px; line-height: 1.3; }
+    .post-body ul, .post-body ol { font-family: var(--font-sans); font-size: 16px; color: var(--fg-2); line-height: 1.65; margin: 0 0 24px; padding-left: 24px; }
+    .post-body li { margin: 0 0 8px; }
+    .post-body li::marker { color: var(--fg-4); }
+    .post-body code { font-family: var(--font-mono); font-size: 0.92em; background: var(--surface); border: 1px solid var(--rule-strong); border-radius: 2px; padding: 0.08em 0.4em; color: var(--fg); }
+    .post-body a { color: var(--red); text-decoration: underline; text-decoration-color: var(--red-dim); text-decoration-thickness: 1px; text-underline-offset: 0.2em; }
+    .post-body a:hover { color: #FCA5A5; text-decoration-color: #FCA5A5; }
+    .post-body strong { color: var(--fg); font-weight: 600; }
+
+    /* Code block */
+    pre.code-block { background: var(--code-bg); border: 1px solid var(--code-border); border-left: 2px solid var(--red); padding: 0; margin: 24px 0; font-family: var(--font-mono); font-size: 13px; line-height: 1.65; color: var(--fg); overflow: hidden; }
+    pre.code-block .head { display:flex; padding: 8px 16px; border-bottom: 1px solid var(--rule-strong); font-size: 11px; color: var(--fg-4); letter-spacing: 0.06em; background: var(--bg-2); }
+    pre.code-block .body { padding: 14px 16px; display:block; overflow-x: auto; }
+    .kw  { color: var(--red); }
+    .str { color: var(--green); }
+    .num { color: var(--amber); }
+    .com { color: var(--fg-4); font-style: italic; }
+    .id  { color: var(--fg); }
+
+    /* Blockquote */
+    .post-body blockquote { border-left: 2px solid var(--red); margin: 28px 0; padding: 4px 0 4px 20px; color: var(--fg-3); font-style: italic; font-size: 18px; font-family: var(--font-sans); line-height: 1.5; }
+
+    /* Callouts */
+    .callout { background: var(--surface); border-left: 2px solid var(--red); padding: 14px 18px; margin: 24px 0; }
+    .callout.amber  { border-left-color: var(--amber); }
+    .callout.green  { border-left-color: var(--green); }
+    .callout.neutral{ border-left-color: var(--fg-5); }
+    .callout .lbl { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 600; margin-bottom: 6px; color: var(--red); }
+    .callout.amber  .lbl { color: var(--amber); }
+    .callout.green  .lbl { color: var(--green); }
+    .callout.neutral .lbl { color: var(--fg-3); }
+    .callout .body { font-family: var(--font-sans); font-size: 14px; line-height: 1.55; color: var(--fg-2); }
+
+    /* MDX demo slot */
+    .demo-slot { border: 1px dashed var(--rule-bright); padding: 24px; margin: 28px 0; background: var(--bg-2); }
+    .demo-slot .demo-head { font-family: var(--font-mono); font-size: 10px; color: var(--fg-4); letter-spacing: 0.14em; text-transform: uppercase; margin-bottom: 14px; font-weight: 600; display: flex; justify-content: space-between; }
+    .demo-slot .demo-head .right { color: var(--red); }
+    .demo-stage { display:grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; align-items: center; }
+    .demo-node { background: var(--surface); border: 1px solid var(--rule-strong); padding: 14px 12px; text-align: center; font-family: var(--font-mono); font-size: 12px; color: var(--fg-2); }
+    .demo-node .lab { font-size: 9px; color: var(--fg-4); letter-spacing: 0.14em; text-transform: uppercase; margin-bottom: 4px; }
+    .demo-node.human { border-color: var(--red); color: var(--red); }
+    .demo-arrow { text-align: center; font-family: var(--font-mono); color: var(--fg-4); }
+    .demo-controls { display: flex; gap: 8px; margin-top: 18px; align-items: center; }
+    .demo-btn { font-family: var(--font-mono); font-size: 11px; color: var(--fg-2); background: var(--surface); border: 1px solid var(--rule-bright); padding: 4px 10px; border-radius: 2px; cursor: pointer; letter-spacing: 0.04em; }
+    .demo-budget { font-family: var(--font-mono); font-size: 11px; color: var(--fg-4); margin-left: auto; letter-spacing: 0.04em; }
+
+    /* Figure / image */
+    figure { margin: 28px 0; }
+    figure .img-placeholder { background: var(--surface); border: 1px solid var(--rule-strong); aspect-ratio: 16/9; display:flex; align-items:center; justify-content:center; font-family: var(--font-mono); color: var(--fg-5); font-size: 11px; letter-spacing: 0.10em; text-transform: uppercase; }
+    figure figcaption { font-family: var(--font-mono); font-size: 11px; color: var(--fg-4); letter-spacing: 0.06em; text-align: center; margin-top: 8px; }
+    figure figcaption .num { color: var(--red); margin-right: 6px; }
+
+    /* Footnotes */
+    .footnotes { max-width: 680px; margin: 56px 0 0; padding-top: 24px; border-top: 1px solid var(--rule-strong); }
+    .footnotes .lbl { font-family: var(--font-mono); font-size: 10px; color: var(--fg-3); letter-spacing: 0.14em; text-transform: uppercase; font-weight: 600; margin-bottom: 14px; }
+    .footnotes ol { font-family: var(--font-sans); font-size: 14px; color: var(--fg-3); line-height: 1.55; margin: 0; padding-left: 24px; }
+    .footnotes li { margin-bottom: 8px; }
+    .fnref { font-family: var(--font-mono); font-size: 0.8em; color: var(--red); text-decoration: none; vertical-align: super; padding: 0 1px; }
+
+    /* Footer / post-footer */
+    .post-foot { max-width: 680px; margin-top: 56px; padding-top: 24px; border-top: 1px solid var(--rule-strong); }
+    .share-row { font-family: var(--font-mono); font-size: 11px; color: var(--fg-4); display: flex; gap: 16px; align-items: baseline; margin-bottom: 32px; letter-spacing: 0.06em; }
+    .share-row .lbl { text-transform: uppercase; letter-spacing: 0.14em; }
+    .share-row a { color: var(--red); text-decoration: none; border-bottom: 1px solid var(--red-dim); padding-bottom: 1px; }
+    .post-nav { display:grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .post-nav-item { color: var(--fg); text-decoration: none; padding: 14px 16px; background: var(--surface); border: 1px solid var(--rule-strong); display: block; }
+    .post-nav-item:hover { border-color: var(--fg-5); background: var(--surface-2); }
+    .post-nav-item.right { text-align: right; }
+    .post-nav-item .dir { font-family: var(--font-mono); font-size: 10px; color: var(--fg-4); letter-spacing: 0.10em; text-transform: uppercase; margin-bottom: 6px; }
+    .post-nav-item .ttl { font-family: var(--font-sans); font-size: 14px; font-weight: 600; color: var(--fg); line-height: 1.3; }
+
+    /* Page footer */
+    .pfoot { max-width: 880px; margin: 96px auto 0; padding: 20px 0 24px; border-top: 1px solid var(--rule-strong); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; font-family: var(--font-mono); font-size: 11px; color: var(--fg-4); letter-spacing: 0.04em; }
+    .pfoot a { color: var(--fg-3); text-decoration: none; }
+    .pfoot .end { display:inline-flex; align-items: center; gap: 6px; }
+    .pfoot .end .dot { width: 8px; height: 8px; background: var(--red); display:inline-block; }
+  </style>
+</head>
+<body data-screen-label="aaron@pangburn:~$ · post · note_017">
+
+<div class="page">
+
+<header class="topbar">
+  <a class="wm" href="#">
+    <span>aaron</span><span class="dim">@</span><span>pangburn</span><span class="dim">:~/notes/017</span><span class="dollar">$</span><span class="cur" aria-hidden="true"></span>
+  </a>
+  <nav class="nav">
+    <a href="#" class="active">writing</a>
+    <a href="#">notes</a>
+    <a href="#">about</a>
+    <a href="#" class="rss">RSS</a>
+  </nav>
+</header>
+
+<main>
+  <a class="back" href="#"><span class="arrow">←</span> cd ..</a>
+
+  <header class="post-head">
+    <div class="meta-row">
+      <span class="id">note_017</span>
+      <span class="sep">·</span>
+      <span>2026·03·12</span>
+      <span class="sep">·</span>
+      <span>8 min read</span>
+      <span class="sep">·</span>
+      <span>4 callouts</span>
+    </div>
+    <h1 class="post-title">The retry loop is a human-in-the-loop loop</h1>
+    <p class="post-dek">Every retry budget should bottom out in a question to a person, not a <code style="font-family:var(--font-mono);font-size:0.92em;background:var(--surface);border:1px solid var(--rule-strong);border-radius:2px;padding:0.08em 0.4em;color:var(--fg-3);font-style:normal">RETRY_EXHAUSTED</code> exception. Rewriting <code style="font-family:var(--font-mono);font-size:0.92em;background:var(--surface);border:1px solid var(--rule-strong);border-radius:2px;padding:0.08em 0.4em;color:var(--fg-3);font-style:normal">orchestrator/retry.ts</code> on a Sunday because Monday's audit needed the trace.</p>
+    <div class="tags">
+      <span class="tag">orchestration</span>
+      <span class="tag">hitl</span>
+      <span class="tag">compliance</span>
+    </div>
+  </header>
+
+  <article class="post-body">
+    <p>I spent the weekend rewriting how <code>orchestrator/retry.ts</code> handles tool failures. The short version: every retry budget should bottom out in a question to a person, not a <code>RETRY_EXHAUSTED</code> exception. Here is the trace from a real run — three loops, one human, one save.</p>
+
+    <p>This is the kind of refactor that looks small in the diff and feels enormous in production. We had three weeks of incident reports that all collapsed into the same shape, and I had stopped reading them because the title was always "agent failed silently." It turns out agents don't fail silently. They fail with all the information you need, addressed to nobody.</p>
+
+    <h2>What was wrong</h2>
+
+    <p>The old loop did the obvious thing: retry N times with exponential backoff, then raise. In a regulated environment that is not a feature, it is a future audit finding<a class="fnref" href="#fn1">¹</a>. The retries are cheap, the human is the expensive resource, and the human is the only thing in the system that knows whether <em>this particular call</em> should be retried, redirected, or abandoned.</p>
+
+    <p>The failure mode I kept hitting was: the agent burns three retries on a flaky internal tool, surfaces a stack trace to a customer-facing service, the on-call gets paged, and our SOC2 evidence is a screenshot. The agent did not <strong>ask</strong>. It just gave up.</p>
+
+    <div class="callout amber">
+      <div class="lbl">caveat</div>
+      <div class="body">This only works because we shipped the trace viewer first. If you cannot see what the agent tried, you cannot ask a useful question about it. See <a href="#">note_015</a> for why the trace viewer is post zero.</div>
+    </div>
+
+    <h2>The new shape</h2>
+
+    <p>The change is fifteen lines of code. Most of it is removing the exception class.</p>
+
+<pre class="code-block"><div class="head"><span>orchestrator/retry.ts</span><span style="margin-left:auto">typescript</span></div><div class="body"><span class="com">// retries bottom out in a human, not an exception</span>
+<span class="kw">export async function</span> retry(task: Task, budget = <span class="num">3</span>) {
+  <span class="kw">for</span> (<span class="kw">let</span> attempt = <span class="num">0</span>; attempt &lt; budget; attempt++) {
+    <span class="kw">try</span> { <span class="kw">return await</span> task.run() }
+    <span class="kw">catch</span> (e: ToolError) {
+      <span class="kw">await</span> logAttempt(task.id, e, attempt)
+    }
+  }
+  <span class="com">// budget exhausted → bottom out in a human, not an exception</span>
+  <span class="kw">return</span> askHuman(task, {
+    reason: <span class="str">"out of retries"</span>,
+    attempts: <span class="kw">await</span> loadAttempts(task.id),
+    severity: task.tier === <span class="str">"prod"</span> ? <span class="str">"page"</span> : <span class="str">"queue"</span>,
+  })
+}</div></pre>
+
+    <div class="callout">
+      <div class="lbl">audit note</div>
+      <div class="body">Every <code>askHuman</code> call writes a row into the decision log with the attempt history, the human who answered, and what they chose. Compliance reads this table on Tuesdays. The table schema is in the appendix of our SOC2 doc.</div>
+    </div>
+
+    <h2>What falls out of this</h2>
+
+    <p>Three things, in order of how much they matter:</p>
+
+    <ol>
+      <li>The agent now has a <strong>vocabulary for "I am stuck."</strong> That is the API the human consumes. Before, the agent's only escape hatch was raising. Now it has a typed message.</li>
+      <li>Logs from each attempt are <strong>passed through to the human</strong>. They do not have to re-derive what was tried. This collapsed our MTTR on agent-related incidents from forty minutes to under five.</li>
+      <li>The <em>next</em> time the agent hits this class of failure, it <strong>tries the human's answer first</strong>. We keep a thin lookup table keyed on <code>(task.type, error.code)</code>. It is not memory, it is procedural taste.</li>
+    </ol>
+
+    <h3>The lookup table is not memory</h3>
+
+    <p>I want to be careful here because "agent that learns from human feedback" is the kind of phrase that gets a feature shipped to production and a compliance officer fired. The lookup table is not learning. It is a cache. Every entry has an explicit author, an expiry, and a one-click "this is stale" button. Compliance signed off on it because it is, structurally, a runbook — just one that the agent reads instead of the on-call.</p>
+
+    <div class="demo-slot">
+      <div class="demo-head"><span>// live demo · retry loop</span><span class="right">interactive</span></div>
+      <div class="demo-stage">
+        <div class="demo-node"><div class="lab">agent</div>task.run()</div>
+        <div class="demo-arrow">→</div>
+        <div class="demo-node"><div class="lab">tool</div>error<sub style="color:var(--red)">×3</sub></div>
+      </div>
+      <div class="demo-stage" style="grid-template-columns: 1fr; margin-top: 10px;">
+        <div class="demo-arrow">↓</div>
+      </div>
+      <div class="demo-stage" style="grid-template-columns: 1fr 1fr 1fr;">
+        <div class="demo-node human"><div class="lab">human</div>askHuman()</div>
+        <div class="demo-arrow">→</div>
+        <div class="demo-node"><div class="lab">log</div>decision_log</div>
+      </div>
+      <div class="demo-controls">
+        <button class="demo-btn">▶ run</button>
+        <button class="demo-btn">↻ reset</button>
+        <span class="demo-budget">budget: <span style="color:var(--amber)">3</span> · attempts: <span style="color:var(--red)">3</span> · status: <span style="color:var(--red)">paused @ human</span></span>
+      </div>
+    </div>
+
+    <figure>
+      <div class="img-placeholder">/* trace viewer screenshot · 16:9 · drop in when ready */</div>
+      <figcaption><span class="num">fig 1</span> a real run from production — three retries, one askHuman, one human-authored decision logged at 14:22:08</figcaption>
+    </figure>
+
+    <h2>What I am not claiming</h2>
+
+    <p>I am not claiming this scales to every kind of failure. Some failures should still raise: anything that violates an invariant, anything that touches money, anything that the human can't reasonably triage in under a minute. The point is not "no exceptions ever." The point is that <strong>"out of retries" is not an invariant violation</strong> — it's a request for help, and the system should treat it like one.</p>
+
+    <div class="callout green">
+      <div class="lbl">tl;dr</div>
+      <div class="body">Retries are cheap. Humans are the expensive resource. Audit logs are the only feature compliance cares about. If your agent loop can <code>raise</code>, you have designed a system that fails closed when it should fail to a human. Bottom out the loop.</div>
+    </div>
+
+    <blockquote>The retry budget is a confidence interval on the tool. The human is the prior. Stop modeling the system as if the tool were the prior.</blockquote>
+
+    <div class="callout neutral">
+      <div class="lbl">aside</div>
+      <div class="body">A reader asked whether the same pattern applies to LLM-as-a-tool calls — i.e., when the agent calls another model. Short answer: yes, but the askHuman branch usually wants to log the prompt and the response separately. Long answer is note_018, coming next week.</div>
+    </div>
+
+    <h2>What's next</h2>
+
+    <p>Two follow-ups in the queue:</p>
+
+    <ul>
+      <li><strong>note_018</strong> — applying this pattern to LLM-as-tool calls, where the "tool error" is "the model refused" or "the model hallucinated a field."</li>
+      <li><strong>note_019</strong> — the decision-log schema. SOC2 evidence as code.</li>
+    </ul>
+
+    <p>If you want the YouTube companion to this post, it's a 14-minute walkthrough of the actual commit — <a href="#">watch on youtube</a>. No slides.</p>
+
+  </article>
+
+  <section class="footnotes">
+    <div class="lbl">// notes</div>
+    <ol>
+      <li id="fn1">In our environment, "agent silently failed and was paged out" is the title of approximately one in six incident reports. After this change, that line item went to one in twenty-two over the next six weeks.</li>
+    </ol>
+  </section>
+
+  <footer class="post-foot">
+    <div class="share-row">
+      <span class="lbl">// share</span>
+      <a href="#">x</a>
+      <a href="#">linkedin</a>
+      <a href="#">copy link</a>
+      <a href="#">view source ↗</a>
+    </div>
+    <nav class="post-nav">
+      <a href="#" class="post-nav-item">
+        <div class="dir">← previous</div>
+        <div class="ttl">note_016 · Audit logs are the only feature compliance cares about</div>
+      </a>
+      <a href="#" class="post-nav-item right">
+        <div class="dir">next →</div>
+        <div class="ttl">note_018 · Applying the retry-loop pattern to LLM-as-tool calls</div>
+      </a>
+    </nav>
+  </footer>
+</main>
+
+</div>
+
+<footer class="pfoot">
+  <div>© 2026 aaron pangburn · <a href="#">rss</a> · <a href="#">github</a> · <a href="#">email</a></div>
+  <div class="end">built in the field<span class="dot"></span></div>
+</footer>
+
+</body>
+</html>

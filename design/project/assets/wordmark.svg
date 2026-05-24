@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 48" width="420" height="48" role="img" aria-label="aaron@pangburn:~$">
+  
+  <text x="0" y="32" class="wm" fill="#FAFAFA">aaron</text>
+  <text x="72" y="32" class="wm" fill="#A1A1AA">@</text>
+  <text x="89" y="32" class="wm" fill="#FAFAFA">pangburn</text>
+  <text x="208" y="32" class="wm" fill="#A1A1AA">:</text>
+  <text x="217" y="32" class="wm" fill="#A1A1AA">~</text>
+  <text x="232" y="32" class="wm" fill="#EF4444">$</text>
+  <rect x="252" y="14" width="11" height="20" fill="#EF4444"></rect>
+</svg>

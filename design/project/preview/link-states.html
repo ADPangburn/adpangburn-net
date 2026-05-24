@@ -1,0 +1,23 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><link rel="stylesheet" href="_card.css">
+<style>
+  .row { display: flex; flex-direction: column; gap: 12px; padding: 4px 0; }
+  .item { display:flex; gap: 18px; align-items: baseline; }
+  .lbl { font-family: var(--font-mono); font-size: 10px; color: var(--fg-4); letter-spacing: 0.14em; text-transform: uppercase; min-width: 92px; font-weight: 600; }
+  .demo { font-family: var(--font-sans); font-size: 15px; }
+  a.rest { color: var(--red); text-decoration: underline; text-decoration-thickness: 1px; text-decoration-color: var(--red-dim); text-underline-offset: 0.2em; }
+  a.hover { color: #FCA5A5; text-decoration: underline; text-decoration-thickness: 1px; text-decoration-color: #FCA5A5; text-underline-offset: 0.2em; }
+  a.visit { color: #DC2626; text-decoration: underline; text-decoration-thickness: 1px; text-decoration-color: rgba(220,38,38,0.4); text-underline-offset: 0.2em; }
+  a.focus { color: var(--red); text-decoration: underline; text-decoration-color: var(--red-dim); text-underline-offset: 0.2em; outline: 1px solid var(--red); outline-offset: 3px; border-radius: 2px; }
+  a.ext::after { content: " ↗"; font-family: var(--font-mono); color: var(--fg-4); }
+</style>
+</head>
+<body><div class="card-frame">
+  <div class="row">
+    <div class="item"><span class="lbl">// rest</span>      <span class="demo"><a class="rest" href="#">the orchestrator retry loop</a></span></div>
+    <div class="item"><span class="lbl">// hover</span>     <span class="demo"><a class="hover" href="#">the orchestrator retry loop</a></span></div>
+    <div class="item"><span class="lbl">// visited</span>   <span class="demo"><a class="visit" href="#">the orchestrator retry loop</a></span></div>
+    <div class="item"><span class="lbl">// focus</span>     <span class="demo"><a class="focus" href="#">the orchestrator retry loop</a></span></div>
+    <div class="item"><span class="lbl">// external</span>  <span class="demo"><a class="rest ext" href="#">github.com/ADPangburn</a></span></div>
+  </div>
+</div></body></html>

@@ -1,0 +1,52 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><link rel="stylesheet" href="_card.css">
+<style>
+  .stage {
+    background:
+      linear-gradient(var(--bg-2), var(--bg-2)),
+      repeating-linear-gradient(45deg, transparent 0 8px, rgba(255,255,255,0.02) 8px 9px);
+    background-blend-mode: normal;
+    border: 1px solid var(--rule-strong);
+    padding: 36px 24px;
+    display: flex;
+    gap: 28px;
+    align-items: center;
+    justify-content: center;
+  }
+  .card {
+    width: 200px;
+    height: 92px;
+    background: var(--surface);
+    padding: 14px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--fg-2);
+    letter-spacing: 0.10em;
+    text-transform: uppercase;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  .card .lbl  { font-size: 9px; color: var(--fg-4); letter-spacing: 0.14em; font-weight: 600; }
+  .card .name { color: var(--fg); font-size: 13px; letter-spacing: 0.04em; font-weight: 600; text-transform: none; }
+  .card .meta { color: var(--fg-4); font-size: 9px; letter-spacing: 0.10em; }
+  .flat    { border: 1px solid var(--rule-bright); }
+  .lifted  { border: 1px solid var(--rule-bright); box-shadow: 0 0 0 1px var(--rule-bright), 0 24px 48px -16px rgba(0,0,0,0.85); transform: translateY(-2px); }
+  .note { margin-top: 14px; font-family: var(--font-mono); font-size: 10px; color: var(--fg-4); letter-spacing: 0.14em; text-transform: uppercase; font-weight: 600; }
+</style>
+</head>
+<body><div class="card-frame">
+  <div class="stage">
+    <div class="card flat">
+      <div class="lbl">// default</div>
+      <div class="name">flat</div>
+      <div class="meta">borders carry depth</div>
+    </div>
+    <div class="card lifted">
+      <div class="lbl">// overlay</div>
+      <div class="name">lifted</div>
+      <div class="meta">dialogs · dropdowns only</div>
+    </div>
+  </div>
+  <div class="note">// shadow-overlay: 0 0 0 1px rule-bright, 0 24px 48px -16px black</div>
+</div></body></html>

@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>YouTube thumbnails — pangburn-design</title>
+  <link rel="stylesheet" href="../colors_and_type.css">
+  <style>
+    body { min-height: 100vh; padding: 56px 32px; }
+    .page { max-width: 1200px; margin: 0 auto; }
+    .head { margin-bottom: 40px; }
+    .head .lbl { font-family: var(--font-mono); font-size: 11px; color: var(--fg-4); letter-spacing: 0.14em; text-transform: uppercase; font-weight: 600; margin-bottom: 14px; }
+    .head h1 { font-family: var(--font-sans); font-size: 36px; font-weight: 700; color: var(--fg); margin: 0 0 14px; letter-spacing: -0.025em; line-height: 1.05; }
+    .head p { font-family: var(--font-sans); font-size: 15px; line-height: 1.6; color: var(--fg-3); margin: 0; max-width: 640px; }
+
+    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; }
+    .item { display:flex; flex-direction: column; gap: 12px; }
+    .item .meta { display:flex; justify-content: space-between; align-items: baseline; }
+    .item .label { font-family: var(--font-mono); font-size: 11px; color: var(--fg-3); letter-spacing: 0.10em; text-transform: uppercase; font-weight: 600; }
+    .item .label .num { color: var(--red); margin-right: 8px; }
+    .item .note { font-family: var(--font-mono); font-size: 10px; color: var(--fg-5); letter-spacing: 0.06em; }
+
+    .thumb { aspect-ratio: 16/9; background: var(--bg); border: 1px solid var(--rule-strong); position: relative; overflow: hidden; }
+    .thumb .scan { position: absolute; inset: 0; background: repeating-linear-gradient(0deg, transparent 0, transparent 3px, rgba(255,255,255,0.02) 3px, rgba(255,255,255,0.02) 4px); pointer-events: none; }
+    .thumb .duration { position: absolute; bottom: 12px; right: 12px; font-family: var(--font-mono); font-size: 13px; color: var(--fg); background: rgba(0,0,0,0.85); padding: 3px 8px; border: 1px solid var(--rule-bright); letter-spacing: 0.04em; }
+
+    /* shared corner mark */
+    .corner { position: absolute; top: 18px; left: 18px; font-family: var(--font-mono); font-size: 11px; color: var(--fg-4); letter-spacing: 0.14em; text-transform: uppercase; }
+    .corner .num { color: var(--red); font-weight: 600; }
+    .by { position: absolute; bottom: 18px; left: 18px; font-family: var(--font-mono); font-size: 11px; color: var(--fg-3); letter-spacing: 0.04em; display:inline-flex; align-items: baseline; }
+    .by .dim { color: var(--fg-4); }
+    .by .dollar { color: var(--red); margin: 0 3px; }
+    .by .cur { display:inline-block; width: 6px; height: 11px; background: var(--red); margin-left: 2px; transform: translateY(1px); }
+
+    /* Variant A — file path */
+    .v-a .ttl { position: absolute; top: 50%; left: 36px; transform: translateY(-50%); font-family: var(--font-mono); font-size: 88px; font-weight: 700; letter-spacing: -0.03em; color: var(--fg); line-height: 1; }
+    .v-a .ttl .dim { color: var(--fg-3); }
+    .v-a .ttl .cur { display:inline-block; width: 32px; height: 70px; background: var(--red); margin-left: 8px; transform: translateY(8px); }
+    .v-a .leftrule { position: absolute; left: 0; top: 0; bottom: 0; width: 6px; background: var(--red); }
+
+    /* Variant B — full quote */
+    .v-b .quote { position: absolute; left: 36px; right: 36px; top: 80px; bottom: 80px; display: flex; flex-direction: column; justify-content: center; }
+    .v-b .quote .text { font-family: var(--font-sans); font-size: 38px; font-weight: 700; color: var(--fg); line-height: 1.1; letter-spacing: -0.025em; text-wrap: balance; max-width: 90%; }
+    .v-b .quote .text .red { color: var(--red); }
+    .v-b .quote .who { font-family: var(--font-mono); font-size: 12px; color: var(--fg-4); letter-spacing: 0.10em; text-transform: uppercase; margin-top: 16px; }
+
+    /* Variant C — code snippet */
+    .v-c { background: var(--bg-2); }
+    .v-c .code-window { position: absolute; left: 24px; right: 24px; top: 60px; bottom: 60px; background: var(--bg); border: 1px solid var(--rule-strong); border-left: 4px solid var(--red); overflow: hidden; }
+    .v-c .code-head { display:flex; padding: 8px 14px; border-bottom: 1px solid var(--rule-strong); font-family: var(--font-mono); font-size: 12px; color: var(--fg-4); letter-spacing: 0.06em; background: var(--bg-2); }
+    .v-c .code-head .dots { display:flex; gap: 5px; margin-right: 14px; align-items: center; }
+    .v-c .code-head .dots .d { width: 9px; height: 9px; border-radius: 50%; background: var(--rule-bright); }
+    .v-c .code-body { padding: 16px 22px; font-family: var(--font-mono); font-size: 17px; line-height: 1.55; color: var(--fg); white-space: pre; }
+    .v-c .kw { color: var(--red); } .v-c .str { color: var(--green); } .v-c .num { color: var(--amber); } .v-c .com { color: var(--fg-4); font-style: italic; }
+
+    /* Variant D — diagram */
+    .v-d .stage { position: absolute; left: 36px; right: 36px; top: 70px; bottom: 90px; display:flex; flex-direction: column; gap: 22px; justify-content: center; }
+    .v-d .ttl { font-family: var(--font-sans); font-size: 32px; font-weight: 700; color: var(--fg); letter-spacing: -0.02em; line-height: 1.1; text-wrap: balance; max-width: 80%; }
+    .v-d .ttl .red { color: var(--red); }
+    .v-d .diag { display:flex; align-items: center; gap: 14px; }
+    .v-d .node { background: var(--surface); border: 1px solid var(--rule-strong); padding: 14px 18px; font-family: var(--font-mono); font-size: 14px; color: var(--fg-2); min-width: 120px; text-align: center; }
+    .v-d .node.human { border-color: var(--red); color: var(--red); }
+    .v-d .arrow { font-family: var(--font-mono); color: var(--fg-4); font-size: 18px; }
+    .v-d .x { font-family: var(--font-mono); color: var(--red); font-size: 22px; padding: 0 6px; }
+  </style>
+</head>
+<body data-screen-label="aaron@pangburn:~$ · YouTube thumbnails">
+
+<div class="page">
+  <header class="head">
+    <div class="lbl">// youtube · 1280 × 720</div>
+    <h1>Thumbnail templates.</h1>
+    <p>Four directions for the YouTube companion videos. Same brand, same content, different ways the thumbnail does its job — read at a thumb-size scroll, then earn a click. Pick one to commit to, or rotate by post type.</p>
+  </header>
+
+  <div class="grid">
+
+    <!-- Variant A — file path -->
+    <div class="item">
+      <div class="thumb v-a">
+        <div class="leftrule"></div>
+        <div class="scan"></div>
+        <div class="corner"><span class="num">// NOTE_017</span> · WALKTHROUGH</div>
+        <div class="ttl">retry<span class="dim">.</span>ts<span class="cur"></span></div>
+        <div class="by"><span>aaron</span><span class="dim">@</span><span>pangburn</span><span class="dim">:~/notes</span><span class="dollar">$</span><span class="cur"></span></div>
+        <div class="duration">14:22</div>
+      </div>
+      <div class="meta">
+        <div class="label"><span class="num">A.</span>File path · most minimal</div>
+        <div class="note">commit-walkthrough videos</div>
+      </div>
+    </div>
+
+    <!-- Variant B — full quote -->
+    <div class="item">
+      <div class="thumb v-b">
+        <div class="scan"></div>
+        <div class="corner"><span class="num">// NOTE_017</span></div>
+        <div class="quote">
+          <div class="text">Every retry budget should bottom out in a <span class="red">human</span>, not an exception.</div>
+          <div class="who">aaron pangburn · 14 min</div>
+        </div>
+        <div class="duration">14:22</div>
+      </div>
+      <div class="meta">
+        <div class="label"><span class="num">B.</span>Pull quote · highest read-at-scroll</div>
+        <div class="note">posts with a strong one-line thesis</div>
+      </div>
+    </div>
+
+    <!-- Variant C — code snippet -->
+    <div class="item">
+      <div class="thumb v-c">
+        <div class="scan"></div>
+        <div class="corner"><span class="num">// NOTE_017</span> · ACTUAL CODE</div>
+        <div class="code-window">
+          <div class="code-head">
+            <div class="dots"><span class="d"></span><span class="d"></span><span class="d"></span></div>
+            <span>orchestrator/retry.ts</span>
+            <span style="margin-left:auto">typescript</span>
+          </div>
+          <div class="code-body"><span class="com">// budget exhausted → bottom out in a human</span>
+<span class="kw">return</span> askHuman(task, {
+  reason: <span class="str">"out of retries"</span>,
+  attempts: <span class="num">3</span>,
+})</div>
+        </div>
+        <div class="duration">14:22</div>
+      </div>
+      <div class="meta">
+        <div class="label"><span class="num">C.</span>Code snippet · highest authority</div>
+        <div class="note">deep-dive walkthroughs · pairs with X teaser</div>
+      </div>
+    </div>
+
+    <!-- Variant D — diagram -->
+    <div class="item">
+      <div class="thumb v-d">
+        <div class="scan"></div>
+        <div class="corner"><span class="num">// NOTE_017</span></div>
+        <div class="stage">
+          <div class="ttl">The retry loop is a <span class="red">human-in-the-loop</span> loop.</div>
+          <div class="diag">
+            <div class="node">agent</div>
+            <div class="arrow">→</div>
+            <div class="node">tool<span class="x">×3</span></div>
+            <div class="arrow">→</div>
+            <div class="node human">human</div>
+          </div>
+        </div>
+        <div class="by"><span>aaron</span><span class="dim">@</span><span>pangburn</span><span class="dim">:~/notes</span><span class="dollar">$</span><span class="cur"></span></div>
+        <div class="duration">14:22</div>
+      </div>
+      <div class="meta">
+        <div class="label"><span class="num">D.</span>Diagram · best for systems posts</div>
+        <div class="note">posts whose value is the flow</div>
+      </div>
+    </div>
+
+  </div>
+
+  <div style="margin-top:48px;padding-top:24px;border-top:1px solid var(--rule-strong);font-family:var(--font-mono);font-size:11px;color:var(--fg-4);letter-spacing:0.10em;line-height:1.7;">
+    // shared rules across all four:<br>
+    · 1280×720 · file is a 1.5×-export of these mocks<br>
+    · top-left corner mark is the note id, always · bottom-left is the prompt bar (B and C are exceptions)<br>
+    · 14:22 = the video length, always shown · matches site convention<br>
+    · color = signal · red appears once per thumbnail · never in the duration pill
+  </div>
+</div>
+</body>
+</html>

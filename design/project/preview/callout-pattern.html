@@ -1,0 +1,40 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><link rel="stylesheet" href="_card.css">
+<style>
+  .row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .callout-demo {
+    background: var(--surface);
+    border-left: 2px solid var(--red);
+    padding: 14px 18px;
+  }
+  .callout-demo.green { border-left-color: var(--green); }
+  .callout-demo.amber { border-left-color: var(--amber); }
+  .lbl { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 600; margin-bottom: 6px; color: var(--red); }
+  .lbl.green { color: var(--green); }
+  .lbl.amber { color: var(--amber); }
+  .lbl.fg { color: var(--fg-3); }
+  .body { font-family: var(--font-sans); font-size: 13px; line-height: 1.55; color: var(--fg-2); }
+  .meta { font-family: var(--font-mono); font-size: 10px; color: var(--fg-4); letter-spacing: 0.14em; text-transform: uppercase; margin-top: 12px; font-weight: 600; }
+</style>
+</head>
+<body><div class="card-frame">
+  <div class="row">
+    <div class="callout-demo">
+      <div class="lbl">audit note</div>
+      <div class="body">Every <code style="font-family:var(--font-mono);font-size:0.92em;background:var(--bg);border:1px solid var(--rule-strong);padding:0.05em 0.3em;border-radius:2px;color:var(--fg)">askHuman</code> call writes a row into the decision log. Compliance reads this on Tuesdays.</div>
+    </div>
+    <div class="callout-demo amber">
+      <div class="lbl amber">caveat</div>
+      <div class="body">This only works because we shipped the trace viewer first. Without it, you cannot debug the loop.</div>
+    </div>
+    <div class="callout-demo green">
+      <div class="lbl green">tl;dr</div>
+      <div class="body">Retries are cheap. Humans are the expensive resource. Audit logs are the feature.</div>
+    </div>
+    <div class="callout-demo" style="border-left-color:var(--fg-5)">
+      <div class="lbl fg">aside</div>
+      <div class="body">A quieter variant — same shape, neutral rule, used for tangential context.</div>
+    </div>
+  </div>
+  <div class="meta">// 2px left rule · color = signal · sans body, mono label</div>
+</div></body></html>

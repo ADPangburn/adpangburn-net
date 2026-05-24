@@ -1,0 +1,28 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><link rel="stylesheet" href="_card.css">
+<style>
+  .row { display:grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+  .blk { padding: 16px; color: var(--fg); display:flex; flex-direction:column; gap:6px; min-height:88px; justify-content: space-between; border-radius: 2px; }
+  .blk .name { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.10em; }
+  .blk .hex  { font-family: var(--font-mono); font-size: 10px; opacity: 0.8; }
+  .blk .demo { font-family: var(--font-sans); font-size: 15px; font-weight: 600; }
+  .use { font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.10em; text-transform: uppercase; }
+  .note { font-family: var(--font-mono); font-size: 10px; color: var(--fg-4); letter-spacing: 0.14em; text-transform: uppercase; margin-top: 14px; font-weight: 600; }
+  .demo-row { display:flex; align-items:center; gap: 16px; padding-top: 12px; border-top: 1px solid var(--rule-strong); margin-top: 12px; }
+  .demo-row .lnk { color: var(--red); text-decoration:underline; text-underline-offset: 0.2em; text-decoration-color: var(--red-dim); font-family: var(--font-sans); font-size: 14px; }
+  .demo-row .cur { display:inline-block; width:8px; height:14px; background: var(--red); vertical-align: text-bottom; }
+</style>
+</head>
+<body><div class="card-frame">
+  <div class="row">
+    <div class="blk" style="background:#EF4444;color:#0A0A0A"><div><div class="demo">red</div><div class="use">links · current · accent</div></div><div class="hex">#EF4444</div></div>
+    <div class="blk" style="background:#DC2626;color:#FAFAFA"><div><div class="demo">red-deep</div><div class="use">visited · pressed</div></div><div class="hex">#DC2626</div></div>
+    <div class="blk" style="background:rgba(239,68,68,0.12);color:#FAFAFA;border:1px solid rgba(239,68,68,0.4)"><div><div class="demo">red-soft</div><div class="use" style="color:var(--fg-3)">tint · selection · callout</div></div><div class="hex" style="color:var(--fg-4)">rgba 12%</div></div>
+  </div>
+  <div class="demo-row">
+    <a href="#" class="lnk">the retry loop</a>
+    <span style="font-family:var(--font-mono);font-size:13px;color:var(--fg-3)">$</span>
+    <span class="cur"></span>
+    <span class="note" style="margin: 0">// one accent. used sparingly.</span>
+  </div>
+</div></body></html>

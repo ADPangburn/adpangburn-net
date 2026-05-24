@@ -1,0 +1,29 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><link rel="stylesheet" href="_card.css">
+<style>
+  .row { display:flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+  .lbl { font-family: var(--font-mono); font-size: 10px; color: var(--fg-4); letter-spacing: 0.14em; text-transform: uppercase; margin-bottom: 8px; font-weight: 600; }
+  .group { display:flex; flex-direction:column; }
+</style>
+</head>
+<body><div class="card-frame">
+  <div class="group">
+    <div class="lbl">// variants</div>
+    <div class="row">
+      <button class="btn">read note</button>
+      <button class="btn btn-primary">subscribe</button>
+      <button class="btn btn-accent">$ read</button>
+      <button class="btn btn-ghost">cancel</button>
+    </div>
+  </div>
+  <div class="group" style="margin-top:18px">
+    <div class="lbl">// states</div>
+    <div class="row">
+      <button class="btn">rest</button>
+      <button class="btn" style="background:var(--surface-2);border-color:var(--fg-5)">hover</button>
+      <button class="btn" style="background:var(--surface-3)">pressed</button>
+      <button class="btn" style="outline:1px solid var(--red); outline-offset:2px">focus</button>
+      <button class="btn" style="opacity:0.40;cursor:not-allowed" disabled>disabled</button>
+    </div>
+  </div>
+</div></body></html>

@@ -1,0 +1,34 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><link rel="stylesheet" href="_card.css">
+<style>
+  .row { display:flex; gap: 28px; align-items: center; padding: 6px 0; }
+  .ex { font-family: var(--font-sans); font-weight: 700; font-size: 28px; color: var(--fg); line-height: 1.1; display: inline-flex; align-items: baseline; letter-spacing: -0.025em; }
+  .ex .cur { display:inline-block; width:10px; height:24px; background: var(--red); margin-left: 4px; transform: translateY(2px); }
+  .ex.mono { font-family: var(--font-mono); font-size: 22px; font-weight: 600; letter-spacing: 0; }
+  .col { display:flex; flex-direction:column; gap:8px; }
+  .lbl { font-family: var(--font-mono); font-size: 10px; color: var(--fg-4); letter-spacing: 0.14em; text-transform: uppercase; font-weight: 600; }
+</style>
+</head>
+<body><div class="card-frame">
+  <div class="row">
+    <div class="col">
+      <div class="ex">notes from inside<span class="cur"></span></div>
+      <div class="lbl">// headline closer</div>
+    </div>
+  </div>
+  <div class="row" style="margin-top:14px">
+    <div class="col">
+      <div class="ex mono">retry<span style="color:var(--fg-3)">.</span>ts<span class="cur" style="width:7px;height:16px;margin-left:3px"></span></div>
+      <div class="lbl">// file path</div>
+    </div>
+    <div class="col">
+      <div class="ex" style="font-size:22px">note_017<span class="cur" style="width:7px;height:16px;margin-left:4px"></span></div>
+      <div class="lbl">// post id end-cap</div>
+    </div>
+    <div class="col">
+      <div class="ex mono"><span style="color:var(--red)">$</span><span class="cur" style="margin-left:6px"></span></div>
+      <div class="lbl">// minimal mark</div>
+    </div>
+  </div>
+  <div style="margin-top:16px;font-family:var(--font-mono);font-size:10px;color:var(--fg-4);letter-spacing:0.14em;text-transform:uppercase;font-weight:600">// the block cursor is the brand · one per surface, max · blinks at 1.05s</div>
+</div></body></html>

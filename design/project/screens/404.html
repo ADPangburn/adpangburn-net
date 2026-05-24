@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>404 — aaron@pangburn:~$</title>
+  <link rel="icon" type="image/svg+xml" href="../assets/favicon.svg">
+  <link rel="stylesheet" href="../colors_and_type.css">
+  <style>
+    html, body { min-height: 100%; }
+    body { display: flex; flex-direction: column; }
+    .page { max-width: 880px; margin: 0 auto; padding: 0 32px; flex: 1; display: flex; flex-direction: column; width: 100%; box-sizing: border-box; }
+
+    /* topbar */
+    .topbar { display:flex; align-items:center; justify-content:space-between; padding: 20px 0 16px; border-bottom: 1px solid var(--rule-strong); }
+    .wm { font-family: var(--font-mono); font-weight: 600; font-size: 14px; color: var(--fg); text-decoration: none; display:inline-flex; align-items: baseline; }
+    .wm .dim { color: var(--fg-3); }
+    .wm .dollar { color: var(--red); margin: 0 4px; }
+    .wm .cur { display:inline-block; width:8px; height:14px; background: var(--red); margin-left: 2px; transform: translateY(2px); animation: blink 1.05s steps(2, start) infinite; }
+    @keyframes blink { to { background: transparent; } }
+    @media (prefers-reduced-motion: reduce) { .wm .cur { animation: none; } }
+    .nav { display:flex; gap:20px; align-items:center; }
+    .nav a { font-family: var(--font-mono); font-size: 12px; color: var(--fg-3); text-decoration: none; padding-bottom: 4px; letter-spacing: 0.04em; }
+    .nav .rss { color: var(--fg-4); font-size: 11px; border: 1px solid var(--rule-bright); border-radius: 2px; padding: 4px 8px; letter-spacing: 0.10em; text-transform: uppercase; }
+
+    /* center stage */
+    .stage { flex: 1; display: flex; align-items: center; justify-content: flex-start; padding: 72px 0; }
+    .col { max-width: 680px; }
+
+    .errid { font-family: var(--font-mono); font-size: 11px; color: var(--red); letter-spacing: 0.14em; text-transform: uppercase; font-weight: 600; margin-bottom: 18px; }
+
+    .term { font-family: var(--font-mono); font-size: 16px; line-height: 1.7; background: var(--surface); border: 1px solid var(--rule-strong); border-left: 2px solid var(--red); padding: 18px 22px; margin-bottom: 32px; }
+    .term .line { color: var(--fg); }
+    .term .line .dim { color: var(--fg-3); }
+    .term .line .dollar { color: var(--red); }
+    .term .line .path { color: var(--cyan); }
+    .term .out  { color: var(--fg-3); }
+    .term .err  { color: var(--red); }
+    .term .cur { display:inline-block; width: 8px; height: 16px; background: var(--red); vertical-align: text-bottom; margin-left: 3px; animation: blink 1.05s steps(2, start) infinite; }
+
+    h1 { font-family: var(--font-sans); font-size: 64px; font-weight: 700; color: var(--fg); margin: 0 0 18px; letter-spacing: -0.03em; line-height: 1; }
+    h1 .red { color: var(--red); }
+    .lead { font-family: var(--font-sans); font-size: 17px; color: var(--fg-3); line-height: 1.6; margin: 0 0 28px; max-width: 560px; text-wrap: pretty; }
+
+    .options { display: flex; flex-direction: column; gap: 10px; max-width: 560px; }
+    .option { display: flex; align-items: baseline; gap: 14px; padding: 14px 16px; background: var(--surface); border: 1px solid var(--rule-strong); text-decoration: none; color: inherit; transition: background 80ms ease-out, border-color 120ms ease-out; }
+    .option:hover { background: var(--surface-2); border-color: var(--fg-5); }
+    .option .key { font-family: var(--font-mono); font-size: 11px; color: var(--fg-4); letter-spacing: 0.10em; min-width: 70px; text-transform: uppercase; }
+    .option .key.red { color: var(--red); }
+    .option .ttl { font-family: var(--font-sans); font-size: 15px; font-weight: 600; color: var(--fg); }
+    .option .desc { font-family: var(--font-mono); font-size: 11px; color: var(--fg-4); margin-left: auto; letter-spacing: 0.04em; }
+
+    .pfoot { padding: 20px 0 24px; border-top: 1px solid var(--rule-strong); display:flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; font-family: var(--font-mono); font-size: 11px; color: var(--fg-4); letter-spacing: 0.04em; }
+    .pfoot a { color: var(--fg-3); text-decoration: none; }
+    .pfoot .end { display:inline-flex; align-items: center; gap: 6px; }
+    .pfoot .end .dot { width: 8px; height: 8px; background: var(--red); display:inline-block; }
+  </style>
+</head>
+<body data-screen-label="aaron@pangburn:~$ · 404">
+
+<div class="page">
+
+<header class="topbar">
+  <a class="wm" href="#"><span>aaron</span><span class="dim">@</span><span>pangburn</span><span class="dim">:~</span><span class="dollar">$</span><span class="cur" aria-hidden="true"></span></a>
+  <nav class="nav">
+    <a href="#">writing</a>
+    <a href="#">notes</a>
+    <a href="#">about</a>
+    <a href="#" class="rss">RSS</a>
+  </nav>
+</header>
+
+<section class="stage">
+  <div class="col">
+    <div class="errid">// EXIT 404 · resource not found</div>
+
+    <div class="term">
+      <div class="line"><span class="dim">aaron@pangburn</span><span class="dim">:~</span><span class="dollar">$</span> cat <span class="path">/notes/099</span></div>
+      <div class="out err">cat: /notes/099: No such file or directory</div>
+      <div class="line"><span class="dim">aaron@pangburn</span><span class="dim">:~</span><span class="dollar">$</span> <span class="cur" aria-hidden="true"></span></div>
+    </div>
+
+    <h1>404<span class="red">.</span></h1>
+    <p class="lead">
+      You followed a link that points at a note that does not exist (yet, anyway). Could be a typo. Could be a draft I never shipped. Could be a post I unpublished because compliance asked nicely. Pick one of these instead.
+    </p>
+
+    <div class="options">
+      <a href="#" class="option">
+        <span class="key red">⌘ K</span>
+        <span class="ttl">Search every note</span>
+        <span class="desc">29 notes indexed</span>
+      </a>
+      <a href="#" class="option">
+        <span class="key">cd ..</span>
+        <span class="ttl">Back to writing</span>
+        <span class="desc">the home feed</span>
+      </a>
+      <a href="#" class="option">
+        <span class="key">/notes</span>
+        <span class="ttl">Browse the full archive</span>
+        <span class="desc">grouped by year</span>
+      </a>
+      <a href="#" class="option">
+        <span class="key">mail</span>
+        <span class="ttl">Tell me what you were looking for</span>
+        <span class="desc">aaron@pangburn.net</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer class="pfoot">
+  <div>© 2026 aaron pangburn · <a href="#">rss</a> · <a href="#">github</a> · <a href="#">email</a></div>
+  <div class="end">built in the field<span class="dot"></span></div>
+</footer>
+
+</div>
+
+</body>
+</html>

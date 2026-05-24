@@ -1,0 +1,32 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><link rel="stylesheet" href="_card.css">
+<style>
+  pre.demo { background: #111111; border: 1px solid #2A2A2A; border-left: 2px solid #EF4444; padding: 0; margin: 0; font-family: var(--font-mono); font-size: 13px; line-height: 1.65; color: var(--fg); overflow:hidden; }
+  pre.demo .head { display:flex; padding: 6px 14px; border-bottom: 1px solid #2A2A2A; font-size: 10px; color: var(--fg-4); letter-spacing: 0.06em; background: var(--bg-2); }
+  pre.demo .body { padding: 12px 14px; display: block; }
+  .kw { color: #EF4444; }
+  .str { color: #A3E635; }
+  .num { color: #FCD34D; }
+  .com { color: #71717A; font-style: italic; }
+  .swatch-row { display:flex; gap:14px; margin-top:12px; font-family: var(--font-mono); font-size: 10px; flex-wrap: wrap; }
+  .swatch-row .s { display:flex; align-items:center; gap:6px; color: var(--fg-3); letter-spacing: 0.06em; }
+  .swatch-row .dot { width:9px; height:9px; border-radius:2px; }
+</style>
+</head>
+<body><div class="card-frame">
+<pre class="demo"><div class="head"><span>orchestrator/retry.ts</span><span style="margin-left:auto">typescript</span></div><div class="body"><span class="com">// retries bottom out in a human, not an exception</span>
+<span class="kw">export async function</span> retry(task: Task, budget = <span class="num">3</span>) {
+  <span class="kw">for</span> (<span class="kw">let</span> attempt = <span class="num">0</span>; attempt < budget; attempt++) {
+    <span class="kw">try</span> { <span class="kw">return await</span> task.run() }
+    <span class="kw">catch</span> (e: ToolError) { logAttempt(e, attempt) }
+  }
+  <span class="kw">return</span> askHuman(task, { reason: <span class="str">"out of retries"</span> })
+}</div></pre>
+<div class="swatch-row">
+  <div class="s"><span class="dot" style="background:#EF4444"></span> keyword</div>
+  <div class="s"><span class="dot" style="background:#A3E635"></span> string</div>
+  <div class="s"><span class="dot" style="background:#FCD34D"></span> number</div>
+  <div class="s"><span class="dot" style="background:#71717A"></span> comment</div>
+  <div class="s"><span class="dot" style="background:#FAFAFA"></span> identifier</div>
+</div>
+</div></body></html>

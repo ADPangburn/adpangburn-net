@@ -1,0 +1,303 @@
+/* ============================================================
+   adpangburn.net — globals.css
+   Tokens + base styles from the pangburn-design-system
+   Variant: Terminal (#02) — locked
+   Source: ./design/project/colors_and_type.css + ./DESIGN.md
+   ============================================================ */
+
+@import "tailwindcss";
+
+/* -- Design tokens, exposed as Tailwind theme + CSS vars ----- */
+
+@theme {
+  /* Surfaces — warm near-black, never #000 */
+  --color-bg:           #0A0A0A;
+  --color-bg-2:         #111111;
+  --color-surface:      #171717;
+  --color-surface-2:    #1F1F1F;
+  --color-surface-3:    #2A2A2A;
+
+  /* Foreground — neutral gray ramp, no warm tint */
+  --color-fg:           #FAFAFA;
+  --color-fg-2:         #E4E4E7;
+  --color-fg-3:         #A1A1AA;
+  --color-fg-4:         #71717A;
+  --color-fg-5:         #52525B;
+  --color-fg-6:         #3F3F46;
+
+  /* The accent — used sparingly */
+  --color-red:          #EF4444;
+  --color-red-deep:     #DC2626;
+  --color-red-soft:     rgb(239 68 68 / 0.12);
+  --color-red-dim:      rgb(239 68 68 / 0.40);
+  --color-red-hover:    #FCA5A5;
+
+  /* Signal palette — for diff, status, code syntax */
+  --color-green:        #A3E635;
+  --color-green-dim:    rgb(163 230 53 / 0.20);
+  --color-amber:        #FCD34D;
+  --color-cyan:         #67E8F9;
+  --color-blue:         #93C5FD;
+
+  /* Structural */
+  --color-rule:         #1F1F1F;
+  --color-rule-strong:  #2A2A2A;
+  --color-rule-bright:  #3F3F46;
+
+  /* Fonts — actual font families injected via next/font in layout.tsx */
+  --font-sans:  var(--font-plex-sans), "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-mono:  var(--font-plex-mono), var(--font-jetbrains-mono), "SF Mono", Menlo, Consolas, monospace;
+
+  /* Type scale — anchored at 15px body */
+  --text-xxs:   11px;
+  --text-xs:    12px;
+  --text-sm:    13px;
+  --text-base:  15px;
+  --text-md:    17px;
+  --text-lg:    20px;
+  --text-xl:    24px;
+  --text-2xl:   32px;
+  --text-3xl:   40px;
+  --text-4xl:   56px;
+
+  /* Letter-spacing */
+  --tracking-tighter:  -0.025em;
+  --tracking-tight:    -0.015em;
+  --tracking-normal:    0;
+  --tracking-loose:     0.02em;
+  --tracking-mono:      0.04em;
+  --tracking-caps:      0.14em;
+
+  /* Spacing — design's non-linear scale. Defaults 1-4 already match. */
+  --spacing-5:   24px;
+  --spacing-6:   32px;
+  --spacing-7:   48px;
+  --spacing-8:   64px;
+  --spacing-9:   96px;
+  --spacing-10:  128px;
+
+  /* Radii — minimal, terminal aesthetic */
+  --radius-none:  0;
+  --radius-sm:    2px;
+  --radius-md:    4px;
+
+  /* Containers (max-widths) */
+  --container-col:       680px;   /* prose column */
+  --container-col-wide:  960px;   /* layout chrome */
+}
+
+/* -- Base element styles -------------------------------------- */
+
+@layer base {
+  html {
+    background: var(--color-bg);
+    color: var(--color-fg);
+    font-family: var(--font-sans);
+    font-feature-settings: "ss01", "cv11", "ss03";
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  body {
+    background: var(--color-bg);
+    color: var(--color-fg-2);
+    font-family: var(--font-sans);
+    font-size: var(--text-base);
+    line-height: 1.55;
+    margin: 0;
+    padding: 0;
+  }
+
+  ::selection {
+    background: var(--color-red-soft);
+    color: var(--color-fg);
+  }
+
+  /* Headings */
+
+  h1 {
+    font-family: var(--font-sans);
+    font-size: var(--text-3xl);
+    line-height: 1.10;
+    letter-spacing: var(--tracking-tighter);
+    font-weight: 700;
+    color: var(--color-fg);
+    margin: 0 0 var(--spacing-5);
+    text-wrap: balance;
+  }
+
+  h2 {
+    font-family: var(--font-sans);
+    font-size: var(--text-2xl);
+    line-height: 1.25;
+    letter-spacing: var(--tracking-tight);
+    font-weight: 600;
+    color: var(--color-fg);
+    margin: var(--spacing-7) 0 var(--spacing-3);
+    text-wrap: balance;
+  }
+
+  h3 {
+    font-family: var(--font-sans);
+    font-size: var(--text-xl);
+    line-height: 1.25;
+    letter-spacing: var(--tracking-tight);
+    font-weight: 600;
+    color: var(--color-fg);
+    margin: var(--spacing-6) 0 var(--spacing-3);
+  }
+
+  h4 {
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    font-weight: 600;
+    letter-spacing: var(--tracking-caps);
+    text-transform: uppercase;
+    color: var(--color-fg-3);
+    margin: var(--spacing-5) 0 var(--spacing-3);
+  }
+
+  /* Prose */
+
+  p {
+    margin: 0 0 var(--spacing-4);
+    color: var(--color-fg-2);
+  }
+
+  strong, b {
+    font-weight: 600;
+    color: var(--color-fg);
+  }
+
+  em, i {
+    font-style: italic;
+    color: var(--color-fg-2);
+  }
+
+  small {
+    font-size: var(--text-sm);
+    color: var(--color-fg-3);
+  }
+
+  a {
+    color: var(--color-red);
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.20em;
+    text-decoration-color: var(--color-red-dim);
+    transition: color 120ms ease-out, text-decoration-color 120ms ease-out;
+  }
+  a:hover {
+    color: var(--color-red-hover);
+    text-decoration-color: var(--color-red-hover);
+  }
+  a:visited {
+    color: var(--color-red-deep);
+  }
+  a:focus-visible {
+    outline: 1px solid var(--color-red);
+    outline-offset: 3px;
+    border-radius: var(--radius-sm);
+  }
+
+  /* Code */
+
+  code, kbd, samp {
+    font-family: var(--font-mono);
+    font-size: 0.92em;
+    background: var(--color-surface);
+    border: 1px solid var(--color-rule-strong);
+    border-radius: var(--radius-sm);
+    padding: 0.08em 0.4em;
+    color: var(--color-fg);
+  }
+
+  pre {
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    line-height: 1.65;
+    background: var(--color-bg-2);
+    border: 1px solid var(--color-rule-strong);
+    border-left: 2px solid var(--color-red);
+    border-radius: var(--radius-none);
+    padding: var(--spacing-4) var(--spacing-5);
+    overflow-x: auto;
+    margin: var(--spacing-5) 0;
+    color: var(--color-fg);
+  }
+  pre code {
+    background: none;
+    border: 0;
+    padding: 0;
+    font-size: inherit;
+  }
+
+  /* Quotes + rules */
+
+  blockquote {
+    border-left: 2px solid var(--color-red);
+    margin: var(--spacing-5) 0;
+    padding: var(--spacing-1) 0 var(--spacing-1) var(--spacing-5);
+    color: var(--color-fg-3);
+    font-style: italic;
+    font-size: var(--text-md);
+  }
+
+  hr {
+    border: 0;
+    height: 1px;
+    background: var(--color-rule-strong);
+    margin: var(--spacing-7) 0;
+  }
+
+  /* Lists */
+
+  ul, ol {
+    margin: 0 0 var(--spacing-4);
+    padding-left: var(--spacing-5);
+  }
+  li {
+    margin: 0 0 var(--spacing-2);
+    color: var(--color-fg-2);
+  }
+  li::marker {
+    color: var(--color-fg-4);
+  }
+
+  /* Tables — mono, terminal-style */
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: var(--text-sm);
+    margin: var(--spacing-5) 0;
+    font-family: var(--font-mono);
+  }
+  th, td {
+    text-align: left;
+    padding: var(--spacing-2) var(--spacing-3);
+    border-bottom: 1px solid var(--color-rule-strong);
+  }
+  th {
+    font-family: var(--font-mono);
+    font-weight: 600;
+    color: var(--color-fg-3);
+    background: var(--color-surface);
+    letter-spacing: var(--tracking-caps);
+    text-transform: uppercase;
+    font-size: var(--text-xxs);
+  }
+}
+
+/* -- Brand: blinking block cursor (defined globally; used by PromptBar) ----- */
+
+@keyframes blink {
+  to { background: transparent; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cursor-blink {
+    animation: none !important;
+  }
+}

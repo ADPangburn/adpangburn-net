@@ -1,0 +1,22 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><link rel="stylesheet" href="_card.css">
+<style>
+  .row { display:flex; flex-direction:column; gap:0; }
+  .lbl { font-family: var(--font-mono); font-size: 10px; color: var(--fg-4); letter-spacing: 0.14em; text-transform: uppercase; font-weight: 600; min-width: 100px; }
+  .line { display:flex; align-items:baseline; gap: 18px; padding: 10px 0; border-bottom: 1px solid var(--rule); }
+  .line:last-child { border-bottom: 0; }
+  kbd { font-family: var(--font-mono); font-size: 11px; background: var(--surface-2); border: 1px solid var(--rule-bright); border-bottom-width:2px; border-radius: 3px; padding: 1px 7px; color: var(--fg); }
+  .prompt { font-family: var(--font-mono); font-size: 14px; color: var(--fg); }
+  .prompt .at { color: var(--fg-3); }
+  .prompt .dollar { color: var(--red); margin: 0 3px; }
+  .cursor { display: inline-block; width: 8px; height: 14px; background: var(--red); vertical-align: text-bottom; margin-left: 3px; }
+</style>
+</head>
+<body><div class="card-frame">
+  <div class="row">
+    <div class="line"><div class="lbl">// prompt</div><div class="prompt">aaron<span class="at">@</span>pangburn<span class="at">:~</span><span class="dollar">$</span><span class="cursor"></span></div></div>
+    <div class="line"><div class="lbl">// meta</div><div style="font-family:var(--font-mono);font-size:11px;color:var(--fg-4);letter-spacing:0.10em;text-transform:uppercase">note_017 · 2026·03·12 · orchestration</div></div>
+    <div class="line"><div class="lbl">// keys</div><div><kbd>⌘</kbd> <kbd>K</kbd> &nbsp; <kbd>/</kbd> &nbsp; <kbd>Esc</kbd></div></div>
+    <div class="line"><div class="lbl">// glyphs</div><div style="font-family:var(--font-mono);font-size:16px;color:var(--fg-3);letter-spacing:0.06em">→ &nbsp; · &nbsp; › &nbsp; § &nbsp; ▍ &nbsp; ↗ &nbsp; ⊕</div></div>
+  </div>
+</div></body></html>

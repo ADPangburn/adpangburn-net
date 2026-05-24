@@ -1,0 +1,326 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>~/notes · all notes — aaron@pangburn:~$</title>
+  <link rel="icon" type="image/svg+xml" href="../assets/favicon.svg">
+  <link rel="stylesheet" href="../colors_and_type.css">
+  <style>
+    body { min-height: 100vh; }
+    .page { max-width: 880px; margin: 0 auto; padding: 0 32px; }
+
+    /* topbar (same as post) */
+    .topbar { display:flex; align-items:center; justify-content:space-between; padding: 20px 0 16px; border-bottom: 1px solid var(--rule-strong); margin-bottom: 56px; }
+    .wm { font-family: var(--font-mono); font-weight: 600; font-size: 14px; color: var(--fg); text-decoration: none; display:inline-flex; align-items: baseline; }
+    .wm .dim { color: var(--fg-3); }
+    .wm .dollar { color: var(--red); margin: 0 4px; }
+    .wm .cur { display:inline-block; width:8px; height:14px; background: var(--red); margin-left: 2px; transform: translateY(2px); animation: blink 1.05s steps(2, start) infinite; }
+    @keyframes blink { to { background: transparent; } }
+    @media (prefers-reduced-motion: reduce) { .wm .cur { animation: none; } }
+    .nav { display:flex; gap:20px; align-items:center; }
+    .nav a { font-family: var(--font-mono); font-size: 12px; color: var(--fg-3); text-decoration: none; padding-bottom: 4px; letter-spacing: 0.04em; border-bottom: 1px solid transparent; }
+    .nav a.active { color: var(--fg); border-bottom-color: var(--red); }
+    .nav .rss { color: var(--fg-4); font-size: 11px; border: 1px solid var(--rule-bright); border-radius: 2px; padding: 4px 8px; letter-spacing: 0.10em; text-transform: uppercase; }
+
+    /* archive head */
+    .ahead { margin-bottom: 40px; max-width: 680px; }
+    .ahead .lbl { font-family: var(--font-mono); font-size: 11px; color: var(--fg-4); letter-spacing: 0.14em; text-transform: uppercase; font-weight: 600; margin-bottom: 14px; }
+    .ahead h1 { font-family: var(--font-sans); font-size: 40px; font-weight: 700; color: var(--fg); margin: 0 0 16px; letter-spacing: -0.025em; line-height: 1.05; }
+    .ahead p { font-family: var(--font-sans); font-size: 15px; line-height: 1.6; color: var(--fg-3); margin: 0; max-width: 600px; }
+
+    /* filter bar */
+    .filterbar { display:flex; align-items:center; justify-content: space-between; padding: 14px 16px; background: var(--surface); border: 1px solid var(--rule-strong); margin-bottom: 8px; flex-wrap: wrap; gap: 12px; }
+    .filters { display:flex; gap: 6px; flex-wrap: wrap; }
+    .ftag { font-family: var(--font-mono); font-size: 11px; color: var(--fg-3); background: var(--bg); border: 1px solid var(--rule-strong); border-radius: 2px; padding: 3px 9px; letter-spacing: 0.04em; text-decoration: none; cursor: pointer; }
+    .ftag:hover { color: var(--fg); border-color: var(--fg-5); }
+    .ftag.active { color: var(--fg); background: var(--surface-2); border-color: var(--fg-5); }
+    .ftag .ct { color: var(--fg-5); margin-left: 6px; }
+    .search { font-family: var(--font-mono); font-size: 11px; color: var(--fg-4); display:inline-flex; align-items:center; gap: 6px; padding: 4px 10px; border: 1px solid var(--rule-bright); border-radius: 2px; letter-spacing: 0.04em; }
+    .search kbd { font-family: var(--font-mono); font-size: 10px; background: var(--bg); border: 1px solid var(--rule-bright); border-bottom-width: 2px; padding: 0 4px; border-radius: 2px; color: var(--fg-3); margin-left: 6px; }
+
+    /* table header */
+    .row { display: grid; grid-template-columns: 110px 56px 1fr 220px 60px; gap: 16px; align-items: baseline; padding: 12px 16px; border-bottom: 1px solid var(--rule); text-decoration: none; color: inherit; transition: background 80ms ease-out; }
+    .row.head { border-bottom: 1px solid var(--rule-bright); padding: 8px 16px; font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--fg-4); font-weight: 600; }
+    .row.head .cell { color: var(--fg-4); }
+    .row.entry:hover { background: var(--surface); }
+    .row .date { font-family: var(--font-mono); font-size: 11px; color: var(--fg-4); letter-spacing: 0.04em; }
+    .row .id { font-family: var(--font-mono); font-size: 11px; color: var(--red); font-weight: 600; letter-spacing: 0.04em; }
+    .row .title-cell { min-width: 0; }
+    .row .title-cell .ttl { font-family: var(--font-sans); font-size: 15px; font-weight: 600; color: var(--fg); letter-spacing: -0.015em; line-height: 1.3; margin-bottom: 2px; text-wrap: balance; }
+    .row .title-cell .mk { color: var(--red); font-family: var(--font-mono); margin-right: 6px; }
+    .row .title-cell .dek { font-family: var(--font-sans); font-size: 13px; color: var(--fg-4); line-height: 1.4; text-wrap: pretty; }
+    .row .tags-cell { display:flex; gap: 4px; flex-wrap: wrap; justify-content: flex-end; }
+    .row .tags-cell .t { font-family: var(--font-mono); font-size: 9px; color: var(--fg-4); background: var(--surface); border: 1px solid var(--rule-strong); border-radius: 2px; padding: 2px 6px; letter-spacing: 0.04em; }
+    .row .mins { font-family: var(--font-mono); font-size: 10px; color: var(--fg-5); letter-spacing: 0.08em; text-transform: uppercase; text-align: right; }
+
+    /* year section */
+    .year-head { font-family: var(--font-mono); font-size: 12px; color: var(--fg-3); letter-spacing: 0.14em; text-transform: uppercase; font-weight: 600; margin: 40px 0 6px; padding-bottom: 8px; border-bottom: 1px solid var(--rule-bright); display:flex; justify-content: space-between; align-items: baseline; }
+    .year-head .ct { color: var(--fg-5); font-weight: 500; letter-spacing: 0.10em; font-size: 10px; }
+
+    /* pagination footer */
+    .pager { display:flex; align-items: center; justify-content: space-between; padding: 24px 16px; font-family: var(--font-mono); font-size: 11px; color: var(--fg-4); border-top: 1px solid var(--rule-strong); margin-top: 24px; letter-spacing: 0.04em; }
+    .pager .stats { display:flex; gap: 14px; }
+    .pager .stats .stat { display:inline-flex; gap: 6px; }
+    .pager .stats .num { color: var(--fg); font-weight: 600; }
+
+    .pfoot { max-width: 880px; margin: 96px auto 0; padding: 20px 0 24px; border-top: 1px solid var(--rule-strong); display:flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; font-family: var(--font-mono); font-size: 11px; color: var(--fg-4); letter-spacing: 0.04em; }
+    .pfoot a { color: var(--fg-3); text-decoration: none; }
+    .pfoot .end { display:inline-flex; align-items: center; gap: 6px; }
+    .pfoot .end .dot { width: 8px; height: 8px; background: var(--red); display:inline-block; }
+  </style>
+</head>
+<body data-screen-label="aaron@pangburn:~$ · archive">
+
+<div class="page">
+
+<header class="topbar">
+  <a class="wm" href="#"><span>aaron</span><span class="dim">@</span><span>pangburn</span><span class="dim">:~/notes</span><span class="dollar">$</span><span class="cur" aria-hidden="true"></span></a>
+  <nav class="nav">
+    <a href="#" class="active">writing</a>
+    <a href="#">notes</a>
+    <a href="#">about</a>
+    <a href="#" class="rss">RSS</a>
+  </nav>
+</header>
+
+<main>
+  <section class="ahead">
+    <div class="lbl">// ~/notes · ls -la</div>
+    <h1>Everything I've written.</h1>
+    <p>Every note, dated by when I shipped the work it describes. Filter by tag, search by title, or scroll until you find the trace you were looking for.</p>
+  </section>
+
+  <div class="filterbar">
+    <div class="filters">
+      <a href="#" class="ftag active">all<span class="ct">29</span></a>
+      <a href="#" class="ftag">orchestration<span class="ct">9</span></a>
+      <a href="#" class="ftag">hitl<span class="ct">7</span></a>
+      <a href="#" class="ftag">compliance<span class="ct">6</span></a>
+      <a href="#" class="ftag">observability<span class="ct">5</span></a>
+      <a href="#" class="ftag">security<span class="ct">4</span></a>
+      <a href="#" class="ftag">claude code<span class="ct">3</span></a>
+      <a href="#" class="ftag">process<span class="ct">3</span></a>
+    </div>
+    <div class="search">
+      search<kbd>⌘</kbd><kbd>K</kbd>
+    </div>
+  </div>
+
+  <div class="row head">
+    <div class="cell">date</div>
+    <div class="cell">id</div>
+    <div class="cell">title</div>
+    <div class="cell" style="text-align:right">tags</div>
+    <div class="cell" style="text-align:right">min</div>
+  </div>
+
+  <div class="year-head"><span>// 2026</span><span class="ct">6 notes · 57 min</span></div>
+
+  <a class="row entry" href="#">
+    <div class="date">2026·03·12</div>
+    <div class="id">note_017</div>
+    <div class="title-cell">
+      <div class="ttl"><span class="mk">›</span>The retry loop is a human-in-the-loop loop</div>
+      <div class="dek">Every retry budget should bottom out in a question to a person, not a RETRY_EXHAUSTED exception.</div>
+    </div>
+    <div class="tags-cell"><span class="t">orchestration</span><span class="t">hitl</span></div>
+    <div class="mins">8</div>
+  </a>
+
+  <a class="row entry" href="#">
+    <div class="date">2026·03·04</div>
+    <div class="id">note_016</div>
+    <div class="title-cell">
+      <div class="ttl"><span class="mk">›</span>Audit logs are the only feature compliance cares about</div>
+      <div class="dek">The unglamorous list, in order of how often each one came up in review.</div>
+    </div>
+    <div class="tags-cell"><span class="t">compliance</span><span class="t">observability</span></div>
+    <div class="mins">12</div>
+  </a>
+
+  <a class="row entry" href="#">
+    <div class="date">2026·02·20</div>
+    <div class="id">note_015</div>
+    <div class="title-cell">
+      <div class="ttl"><span class="mk">›</span>Observability is the first feature, not the last</div>
+      <div class="dek">Why I now write the trace viewer before the first prompt.</div>
+    </div>
+    <div class="tags-cell"><span class="t">observability</span><span class="t">tools</span></div>
+    <div class="mins">6</div>
+  </a>
+
+  <a class="row entry" href="#">
+    <div class="date">2026·02·06</div>
+    <div class="id">note_014</div>
+    <div class="title-cell">
+      <div class="ttl"><span class="mk">›</span>Running Claude Code like a team, not a CLI</div>
+      <div class="dek">Six months of treating one model as five coworkers. What stuck, what did not.</div>
+    </div>
+    <div class="tags-cell"><span class="t">claude code</span><span class="t">process</span></div>
+    <div class="mins">14</div>
+  </a>
+
+  <a class="row entry" href="#">
+    <div class="date">2026·01·22</div>
+    <div class="id">note_013</div>
+    <div class="title-cell">
+      <div class="ttl"><span class="mk">›</span>Why I built the dashboard before the orchestrator</div>
+      <div class="dek">If you cannot see the agents work, you cannot trust the agents. The dashboard is the safety story.</div>
+    </div>
+    <div class="tags-cell"><span class="t">observability</span><span class="t">tools</span></div>
+    <div class="mins">10</div>
+  </a>
+
+  <a class="row entry" href="#">
+    <div class="date">2026·01·09</div>
+    <div class="id">note_012</div>
+    <div class="title-cell">
+      <div class="ttl"><span class="mk">›</span>Prompt injection is a control-flow bug</div>
+      <div class="dek">Stop treating it like an LLM problem. Treat it like the SSRF of the agent era.</div>
+    </div>
+    <div class="tags-cell"><span class="t">security</span><span class="t">hitl</span></div>
+    <div class="mins">7</div>
+  </a>
+
+  <div class="year-head"><span>// 2025</span><span class="ct">11 notes · 84 min</span></div>
+
+  <a class="row entry" href="#">
+    <div class="date">2025·12·14</div>
+    <div class="id">note_011</div>
+    <div class="title-cell">
+      <div class="ttl"><span class="mk">›</span>The three environments my agents are allowed to touch</div>
+      <div class="dek">Read-only, sandboxed write, and prod. The promotion gate between them is the entire story.</div>
+    </div>
+    <div class="tags-cell"><span class="t">security</span><span class="t">process</span></div>
+    <div class="mins">5</div>
+  </a>
+
+  <a class="row entry" href="#">
+    <div class="date">2025·11·28</div>
+    <div class="id">note_010</div>
+    <div class="title-cell">
+      <div class="ttl"><span class="mk">›</span>What "taste" looks like in an agent's knowledge graph</div>
+      <div class="dek">Three months of building familiar. What it remembers, what it forgets, who decides.</div>
+    </div>
+    <div class="tags-cell"><span class="t">familiar</span><span class="t">memory</span></div>
+    <div class="mins">11</div>
+  </a>
+
+  <a class="row entry" href="#">
+    <div class="date">2025·11·11</div>
+    <div class="id">note_009</div>
+    <div class="title-cell">
+      <div class="ttl"><span class="mk">›</span>Cost as a control plane, not a dashboard</div>
+      <div class="dek">Token budgets enforced at the orchestrator, not the model. With the actual numbers.</div>
+    </div>
+    <div class="tags-cell"><span class="t">orchestration</span><span class="t">cost</span></div>
+    <div class="mins">9</div>
+  </a>
+
+  <a class="row entry" href="#">
+    <div class="date">2025·10·30</div>
+    <div class="id">note_008</div>
+    <div class="title-cell">
+      <div class="ttl"><span class="mk">›</span>RBAC for agents is mostly just RBAC</div>
+      <div class="dek">Stop inventing new permission models. The agent is a user with a service principal.</div>
+    </div>
+    <div class="tags-cell"><span class="t">security</span><span class="t">compliance</span></div>
+    <div class="mins">6</div>
+  </a>
+
+  <a class="row entry" href="#">
+    <div class="date">2025·10·14</div>
+    <div class="id">note_007</div>
+    <div class="title-cell">
+      <div class="ttl"><span class="mk">›</span>The change window is the loop boundary</div>
+      <div class="dek">Why my agents respect the same maintenance windows the on-call does.</div>
+    </div>
+    <div class="tags-cell"><span class="t">process</span><span class="t">compliance</span></div>
+    <div class="mins">7</div>
+  </a>
+
+  <a class="row entry" href="#">
+    <div class="date">2025·09·27</div>
+    <div class="id">note_006</div>
+    <div class="title-cell">
+      <div class="ttl"><span class="mk">›</span>Six months of evals: what mattered, what didn't</div>
+      <div class="dek">The eval suite I trust now is one-fifth the size of the one I started with.</div>
+    </div>
+    <div class="tags-cell"><span class="t">evals</span><span class="t">orchestration</span></div>
+    <div class="mins">12</div>
+  </a>
+
+  <a class="row entry" href="#">
+    <div class="date">2025·09·10</div>
+    <div class="id">note_005</div>
+    <div class="title-cell">
+      <div class="ttl"><span class="mk">›</span>Trace IDs are the audit trail</div>
+      <div class="dek">If every action carries the trace, every action can be reviewed. No exceptions.</div>
+    </div>
+    <div class="tags-cell"><span class="t">observability</span><span class="t">compliance</span></div>
+    <div class="mins">5</div>
+  </a>
+
+  <a class="row entry" href="#">
+    <div class="date">2025·08·23</div>
+    <div class="id">note_004</div>
+    <div class="title-cell">
+      <div class="ttl"><span class="mk">›</span>Building familiar: a senior dev in a box for SMBs</div>
+      <div class="dek">The architecture, the bets, and the moment I almost shipped without an audit log.</div>
+    </div>
+    <div class="tags-cell"><span class="t">familiar</span><span class="t">architecture</span></div>
+    <div class="mins">14</div>
+  </a>
+
+  <a class="row entry" href="#">
+    <div class="date">2025·08·05</div>
+    <div class="id">note_003</div>
+    <div class="title-cell">
+      <div class="ttl"><span class="mk">›</span>The orchestrator is a state machine, not a chain</div>
+      <div class="dek">LangChain made me realize what I did not want.</div>
+    </div>
+    <div class="tags-cell"><span class="t">orchestration</span><span class="t">architecture</span></div>
+    <div class="mins">8</div>
+  </a>
+
+  <a class="row entry" href="#">
+    <div class="date">2025·07·18</div>
+    <div class="id">note_002</div>
+    <div class="title-cell">
+      <div class="ttl"><span class="mk">›</span>What I expect an enterprise agent to refuse</div>
+      <div class="dek">A working list. Half of it is obvious. The other half was learned the hard way.</div>
+    </div>
+    <div class="tags-cell"><span class="t">security</span><span class="t">hitl</span></div>
+    <div class="mins">4</div>
+  </a>
+
+  <a class="row entry" href="#">
+    <div class="date">2025·06·30</div>
+    <div class="id">note_001</div>
+    <div class="title-cell">
+      <div class="ttl"><span class="mk">›</span>Why I'm writing this down</div>
+      <div class="dek">Fifteen years in, the work finally got interesting enough to publish. Read this first.</div>
+    </div>
+    <div class="tags-cell"><span class="t">meta</span></div>
+    <div class="mins">3</div>
+  </a>
+
+  <div class="pager">
+    <div class="stats">
+      <span class="stat"><span class="num">17</span> notes · 2026–2025</span>
+      <span class="stat"><span class="num">141</span> min total</span>
+    </div>
+    <div>showing 17 of 29 · <a href="#" style="color:var(--red);text-decoration:none;border-bottom:1px solid var(--red-dim)">load 2024 →</a></div>
+  </div>
+</main>
+
+</div>
+
+<footer class="pfoot">
+  <div>© 2026 aaron pangburn · <a href="#">rss</a> · <a href="#">github</a> · <a href="#">email</a></div>
+  <div class="end">built in the field<span class="dot"></span></div>
+</footer>
+
+</body>
+</html>

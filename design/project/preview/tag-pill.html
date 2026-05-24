@@ -1,0 +1,31 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><link rel="stylesheet" href="_card.css">
+<style>
+  .row { display:flex; gap: 8px; flex-wrap: wrap; margin-bottom: 14px; }
+  .tag { font-family: var(--font-mono); font-size: 11px; color: var(--fg-3); background: var(--surface); border: 1px solid var(--rule-strong); border-radius: 2px; padding: 3px 9px; letter-spacing: 0.04em; }
+  .tag.active { color: var(--fg); background: var(--surface-2); border-color: var(--fg-5); }
+  .tag.red { color: var(--red); background: var(--red-soft); border-color: var(--red-dim); }
+  .tag.green { color: var(--green); background: rgba(163,230,53,0.10); border-color: rgba(163,230,53,0.40); }
+  .lbl { font-family: var(--font-mono); font-size: 10px; color: var(--fg-4); letter-spacing: 0.14em; text-transform: uppercase; margin-bottom: 8px; font-weight: 600; }
+</style>
+</head>
+<body><div class="card-frame">
+  <div class="lbl">// tags · post categories</div>
+  <div class="row">
+    <span class="tag">orchestration</span>
+    <span class="tag">hitl</span>
+    <span class="tag">compliance</span>
+    <span class="tag">observability</span>
+    <span class="tag">security</span>
+    <span class="tag">claude code</span>
+    <span class="tag">video</span>
+  </div>
+  <div class="lbl">// states · filter · status pills</div>
+  <div class="row">
+    <span class="tag active">all</span>
+    <span class="tag">notes</span>
+    <span class="tag green">+ shipped</span>
+    <span class="tag red">draft</span>
+    <span class="tag" style="opacity:0.4">archive</span>
+  </div>
+</div></body></html>

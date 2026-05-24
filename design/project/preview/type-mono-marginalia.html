@@ -1,0 +1,37 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><link rel="stylesheet" href="_card.css">
+<style>
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px 28px; align-items: start; }
+  .item { display: flex; flex-direction: column; gap: 6px; }
+  .demo { font-family: var(--font-mono); }
+  .lbl { font-family: var(--font-mono); font-size: 10px; color: var(--fg-4); letter-spacing: 0.14em; text-transform: uppercase; font-weight: 600; }
+  .row-mar { display:flex; gap:14px; align-items:baseline; padding:12px 0 0; border-top:1px solid var(--rule-strong); margin-top: 6px; }
+  .row-mar .num { font-family: var(--font-mono); font-size: 12px; color: var(--red); font-weight: 600; letter-spacing: 0.04em; }
+  .row-mar .ttl { font-family: var(--font-sans); font-size: 18px; font-weight:600; color: var(--fg); letter-spacing:-0.015em; }
+  .row-mar .marker { color: var(--red); font-family: var(--font-mono); margin-right: 6px; }
+</style>
+</head>
+<body><div class="card-frame">
+  <div class="grid">
+    <div class="item">
+      <div class="lbl">// post id</div>
+      <div class="demo" style="font-size:18px;color:var(--red);font-weight:600;letter-spacing:0.04em">note_017</div>
+    </div>
+    <div class="item">
+      <div class="lbl">// tabular nums</div>
+      <div class="demo" style="font-size:16px;color:var(--fg);font-variant-numeric:tabular-nums">1,247 · 3.14 · 14:22</div>
+    </div>
+    <div class="item">
+      <div class="lbl">// caption</div>
+      <div class="demo" style="font-size:11px;color:var(--fg-4);letter-spacing:0.10em;text-transform:uppercase">fig 2 · orchestrator trace</div>
+    </div>
+    <div class="item">
+      <div class="lbl">// inline code</div>
+      <div style="font-size:14px;color:var(--fg)"><code style="font-family:var(--font-mono);font-size:0.92em;background:var(--surface);border:1px solid var(--rule-strong);border-radius:2px;padding:0.08em 0.4em">retry_budget = 3</code></div>
+    </div>
+  </div>
+  <div class="row-mar">
+    <div class="num">note_017</div>
+    <div class="ttl"><span class="marker">›</span>The retry loop is a human-in-the-loop loop</div>
+  </div>
+</div></body></html>

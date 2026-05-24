@@ -1,0 +1,19 @@
+/* Preview-card scaffolding. Imports the real system. */
+@import url("../colors_and_type.css");
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.card-frame {
+  padding: 22px 28px;
+  box-sizing: border-box;
+  width: 700px;
+  min-height: 100px;
+}

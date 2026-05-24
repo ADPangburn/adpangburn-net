@@ -1,0 +1,27 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><link rel="stylesheet" href="_card.css">
+<style>
+  .row { display:grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+  .blk { padding: 14px; min-height: 72px; display: flex; flex-direction: column; justify-content: space-between; border-radius: 2px; }
+  .name { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.04em; }
+  .hex { font-family: var(--font-mono); font-size: 10px; opacity: 0.75; }
+  .demo { font-family: var(--font-mono); font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+  .uses { display:flex; gap: 8px; flex-wrap: wrap; margin-top: 14px; }
+  .uses .pill { font-family: var(--font-mono); font-size: 10px; padding: 2px 8px; border: 1px solid; border-radius: 2px; letter-spacing: 0.04em; }
+</style>
+</head>
+<body><div class="card-frame">
+  <div class="row">
+    <div class="blk" style="background:rgba(163,230,53,0.20);border:1px solid rgba(163,230,53,0.4)"><div><div class="demo" style="color:#A3E635">green</div><div style="font-size:9px;color:var(--fg-4);font-family:var(--font-mono);letter-spacing:0.10em;text-transform:uppercase">strings · +diff · ok</div></div><div class="hex" style="color:var(--fg-4)">#A3E635</div></div>
+    <div class="blk" style="background:rgba(252,211,77,0.16);border:1px solid rgba(252,211,77,0.4)"><div><div class="demo" style="color:#FCD34D">amber</div><div style="font-size:9px;color:var(--fg-4);font-family:var(--font-mono);letter-spacing:0.10em;text-transform:uppercase">numbers · warn · modified</div></div><div class="hex" style="color:var(--fg-4)">#FCD34D</div></div>
+    <div class="blk" style="background:rgba(103,232,249,0.14);border:1px solid rgba(103,232,249,0.4)"><div><div class="demo" style="color:#67E8F9">cyan</div><div style="font-size:9px;color:var(--fg-4);font-family:var(--font-mono);letter-spacing:0.10em;text-transform:uppercase">tokens · hashes</div></div><div class="hex" style="color:var(--fg-4)">#67E8F9</div></div>
+    <div class="blk" style="background:rgba(147,197,253,0.12);border:1px solid rgba(147,197,253,0.4)"><div><div class="demo" style="color:#93C5FD">blue</div><div style="font-size:9px;color:var(--fg-4);font-family:var(--font-mono);letter-spacing:0.10em;text-transform:uppercase">identifiers · 2°</div></div><div class="hex" style="color:var(--fg-4)">#93C5FD</div></div>
+  </div>
+  <div class="uses">
+    <span class="pill" style="color:#A3E635;border-color:rgba(163,230,53,0.4);background:rgba(163,230,53,0.10)">+ 14 added</span>
+    <span class="pill" style="color:#FCD34D;border-color:rgba(252,211,77,0.4);background:rgba(252,211,77,0.10)">~ 3 modified</span>
+    <span class="pill" style="color:#EF4444;border-color:var(--red-dim);background:var(--red-soft)">– 8 removed</span>
+    <span class="pill" style="color:var(--fg-3);border-color:var(--rule-strong);background:var(--surface)">~/notes</span>
+  </div>
+  <div style="margin-top:12px;font-family:var(--font-mono);font-size:10px;color:var(--fg-4);letter-spacing:0.14em;text-transform:uppercase;font-weight:600">// signal palette · diff logs · status pills · never large surfaces</div>
+</div></body></html>
