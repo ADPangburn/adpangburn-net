@@ -265,6 +265,18 @@
     color: var(--color-fg-4);
   }
 
+  /* Brand: blinking block cursor — used by PromptBar and Footer */
+
+  .cursor-blink {
+    display: inline-block;
+    width: 0.55em;
+    height: 1em;
+    background: var(--color-red);
+    vertical-align: text-bottom;
+    margin-left: 4px;
+    animation: blink 1.05s steps(2, start) infinite;
+  }
+
   /* Tables — mono, terminal-style */
 
   table {
