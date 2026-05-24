@@ -1,7 +1,12 @@
 {
-  "name": "adpangburn-net",
+  "name": "apangburn-net",
   "version": "0.1.0",
+  "description": "Aaron Pangburn's engineering blog — HITL multi-agent orchestration, from the field.",
   "private": true,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ADPangburn/adpangburn-net.git"
+  },
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -9,17 +14,25 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@mdx-js/loader": "^3.1.1",
+    "@mdx-js/react": "^3.1.1",
+    "@next/mdx": "^16.2.6",
+    "gray-matter": "^4.0.3",
     "next": "16.2.6",
+    "next-mdx-remote": "^6.0.0",
     "react": "19.2.4",
     "react-dom": "19.2.4"
   },
   "devDependencies": {
+    "@playwright/test": "^1.60.0",
     "@tailwindcss/postcss": "^4",
+    "@types/mdx": "^2.0.13",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "16.2.6",
+    "serve": "^14.2.6",
     "tailwindcss": "^4",
     "typescript": "^5"
   }
