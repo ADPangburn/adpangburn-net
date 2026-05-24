@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import { IBM_Plex_Sans, IBM_Plex_Mono, JetBrains_Mono } from "next/font/google";
+import Footer from "@/components/Footer";
+import Header from "@/components/Header";
 import "./globals.css";
 
 const plexSans = IBM_Plex_Sans({
@@ -27,14 +29,20 @@ const jetbrainsMono = JetBrains_Mono({
 export const metadata: Metadata = {
   title: "aaron pangburn",
   description:
-    "HITL multi-agent orchestration, from the field. Notes from inside the regulated stack by Aaron Pangburn.",
+    "HITL multi-agent orchestration, from the field — Aaron Pangburn's engineering blog",
   metadataBase: new URL("https://apangburn.net"),
+  icons: { icon: "/favicon.svg" },
   openGraph: {
     title: "aaron pangburn",
-    description: "HITL multi-agent orchestration, from the field.",
+    description: "HITL multi-agent orchestration, from the field",
     url: "https://apangburn.net",
     siteName: "aaron pangburn",
     type: "website",
+  },
+  twitter: {
+    card: "summary",
+    title: "aaron pangburn",
+    description: "HITL multi-agent orchestration, from the field",
   },
 };
 
@@ -48,8 +56,10 @@ export default function RootLayout({
       lang="en"
       className={`${plexSans.variable} ${plexMono.variable} ${jetbrainsMono.variable}`}
     >
-      <body className="min-h-screen bg-bg text-fg-2 font-sans antialiased">
-        {children}
+      <body className="flex flex-col min-h-screen bg-bg text-fg-2 font-sans antialiased">
+        <Header />
+        <main className="flex-1">{children}</main>
+        <Footer />
       </body>
     </html>
   );

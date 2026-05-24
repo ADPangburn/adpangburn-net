@@ -21,7 +21,7 @@ export default function Home() {
             className="font-mono uppercase m-0 text-fg-3 font-semibold"
             style={{ fontSize: "12px", letterSpacing: "0.14em" }}
           >
-            // notes
+            {"// notes"}
           </h2>
           <span
             className="font-mono uppercase text-fg-5"
@@ -34,7 +34,7 @@ export default function Home() {
           className="font-mono text-fg-4 m-0 py-9"
           style={{ fontSize: "13px", letterSpacing: "0.04em" }}
         >
-          // no_posts_yet
+          {"// no_posts_yet"}
         </p>
       </section>
     </div>

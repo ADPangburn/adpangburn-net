@@ -1,13 +1,22 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useSyncExternalStore } from "react";
+
+function subscribe() {
+  return () => {};
+}
+
+function getClientPath(): string {
+  if (typeof window === "undefined") return "";
+  return window.location.pathname || "";
+}
+
+function getServerPath(): string {
+  return "";
+}
 
 export default function NotFound() {
-  const [path, setPath] = useState("");
-
-  useEffect(() => {
-    setPath(window.location.pathname || "");
-  }, []);
+  const path = useSyncExternalStore(subscribe, getClientPath, getServerPath);
 
   return (
     <div className="mx-auto max-w-col-wide px-5 py-10">
@@ -15,7 +24,7 @@ export default function NotFound() {
         className="font-mono uppercase text-red font-semibold mb-5"
         style={{ fontSize: "11px", letterSpacing: "0.14em" }}
       >
-        // EXIT 404 · resource not found
+        {"// EXIT 404 · resource not found"}
       </div>
 
       <div
