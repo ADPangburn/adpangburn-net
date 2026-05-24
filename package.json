@@ -1,7 +1,12 @@
 {
-  "name": "adpangburn-net",
+  "name": "apangburn-net",
   "version": "0.1.0",
+  "description": "Aaron Pangburn's engineering blog — HITL multi-agent orchestration, from the field.",
   "private": true,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ADPangburn/adpangburn-net.git"
+  },
   "scripts": {
     "dev": "next dev",
     "build": "next build",

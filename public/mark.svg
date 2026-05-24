@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 80" width="120" height="80" role="img" aria-label="adp mark">
+  <rect width="120" height="80" fill="#0A0A0A"></rect>
+  <text x="14" y="56" font-family="IBM Plex Mono, monospace" font-weight="700" font-size="38" letter-spacing="-1.5" fill="#FAFAFA">adp</text>
+  <rect x="86" y="26" width="18" height="30" fill="#EF4444"></rect>
+</svg>
