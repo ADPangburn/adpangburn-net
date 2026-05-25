@@ -17,8 +17,8 @@ test('home page', async ({ page }) => {
   await expect(cursor).toBeVisible();
   await expect(cursor).toHaveCSS('animation-duration', '1.05s');
 
-  // empty-state placeholder
-  await expect(page.getByText('// no_posts_yet')).toBeVisible();
+  // hero section present
+  await expect(page.getByTestId('hero-section')).toBeVisible();
 
   // footer present
   const footer = page.getByTestId('footer');
@@ -26,9 +26,7 @@ test('home page', async ({ page }) => {
   await expect(footer).toContainText('aaron pangburn');
   await expect(footer).toContainText('2026');
 
-  // favicon link in head — the explicit SVG favicon from layout metadata.
-  // Next 16 also auto-emits an /favicon.ico link from public/favicon.ico; both
-  // are valid icon links. We assert the SVG link exists and resolves.
+  // favicon link in head
   const faviconSvgLink = page.locator('link[rel="icon"][href="/favicon.svg"]');
   await expect(faviconSvgLink).toHaveCount(1);
   const faviconResp = await page.request.get('/favicon.svg');
@@ -46,4 +44,38 @@ test('404 page', async ({ page }) => {
   await page.goto('/404.html');
   await expect(page.getByText(/command not found/i)).toBeVisible();
   await page.screenshot({ path: 'tests/screenshots/404.png', fullPage: true });
+});
+
+test('post list — mobile layout (375px)', async ({ page }) => {
+  await page.setViewportSize({ width: 375, height: 812 });
+  await page.goto('/');
+  // Use exact post slug to avoid matching the nav "notes" link
+  const postItem = page.locator('a[href="/notes/lorem-ipsum/"]');
+  // At mobile, outer link is display:block (not grid)
+  await expect(postItem).toHaveCSS('display', 'block');
+});
+
+test('post list — desktop grid (1280px)', async ({ page }) => {
+  await page.setViewportSize({ width: 1280, height: 900 });
+  await page.goto('/');
+  // Use exact post slug to avoid matching the nav "notes" link
+  const postItem = page.locator('a[href="/notes/lorem-ipsum/"]');
+  // At desktop, outer link is display:grid
+  await expect(postItem).toHaveCSS('display', 'grid');
+});
+
+test('home page — hero prompt hidden on mobile (375px)', async ({ page }) => {
+  await page.setViewportSize({ width: 375, height: 812 });
+  await page.goto('/');
+  const heroPrompt = page.getByTestId('hero-prompt');
+  await expect(heroPrompt).toHaveCSS('display', 'none');
+  // Header prompt still visible
+  await expect(page.locator('header')).toBeVisible();
+});
+
+test('home page — hero prompt visible on desktop (1280px)', async ({ page }) => {
+  await page.setViewportSize({ width: 1280, height: 900 });
+  await page.goto('/');
+  const heroPrompt = page.getByTestId('hero-prompt');
+  await expect(heroPrompt).not.toHaveCSS('display', 'none');
 });
