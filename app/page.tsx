@@ -1,4 +1,9 @@
+import { getAllPosts } from "@/lib/posts";
+import PostListItem from "@/components/PostListItem";
+
 export default function Home() {
+  const posts = getAllPosts();
+
   return (
     <div className="mx-auto max-w-col-wide px-5 py-10">
       <section className="mb-9">
@@ -27,15 +32,23 @@ export default function Home() {
             className="font-mono uppercase text-fg-5"
             style={{ fontSize: "10px", letterSpacing: "0.10em" }}
           >
-            0 notes
+            {posts.length} {posts.length === 1 ? "note" : "notes"}
           </span>
         </div>
-        <p
-          className="font-mono text-fg-4 m-0 py-9"
-          style={{ fontSize: "13px", letterSpacing: "0.04em" }}
-        >
-          {"// no_posts_yet"}
-        </p>
+        {posts.length === 0 ? (
+          <p
+            className="font-mono text-fg-4 m-0 py-9"
+            style={{ fontSize: "13px", letterSpacing: "0.04em" }}
+          >
+            {"// no_posts_yet"}
+          </p>
+        ) : (
+          <div>
+            {posts.map((post, i) => (
+              <PostListItem key={post.slug} post={post} index={i} />
+            ))}
+          </div>
+        )}
       </section>
     </div>
   );
